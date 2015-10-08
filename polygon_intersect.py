@@ -6,8 +6,6 @@ import matplotlib.pyplot as plt
 def polygon_intersect():
 # find_intersections():
 # find_polygons():
-    px = (21, 15, 12,  6,  3, 3, 15)
-    py = (21, 42, 42, 30, 18, 9, 9)
     P1 = [(7,7),(5,14),(4,14),(2,10),(1,6),(1,3),(5,3)]
     P2 = [(5,8),(9,10),(5,17),(4,11)]
     
@@ -18,7 +16,21 @@ def find_intersections(P1,P2):
     x2 = [P2[i][0] for i in range(len(P2))]
     y2 = [P2[i][1] for i in range(len(P2))]
     ylist = np.sort(y1 + y2)
-    ylist = ylist[::-1]
+    ylabels = [1]*len(y1) + [2]*len(y2)
+    eventlist = ylist[::-1]
+    ylist_ind = np.argsort(y1 + y2)
+    order = ylist_ind[::-1]
+    for y, ind in zip(eventlist,order):
+        if (ylabels[ind] == 1):
+            segment1 = [((x1)[ind-1],(y1)[ind-1]),((x1)[ind],(y1)[ind])]
+            segment2 = [((x1)[ind],(y1)[ind]),((x1)[(ind+1)%len(x1)],(y1)[(ind+1)%len(x1)])]
+        else:
+            ind -= len(x1)
+            segment1 = [((x2)[ind-1],(y2)[ind-1]),((x2)[ind],(y2)[ind])]
+            segment2 = [((x2)[ind],(y2)[ind]),((x2)[(ind+1)%len(y2)],(y2)[(ind+1)%len(y2)])]
+        print segment1
+        print segment2
+        raw_input("Press Enter to continue...")
 
 def line_intersect(l1,l2):
 # http://www.ahinson.com/algorithms_general/Sections/Geometry/ParametricLineIntersection.pdf
