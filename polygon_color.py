@@ -16,31 +16,13 @@ def polygon_color():
     flood_fill(int(np.median(px)),int(np.median(py)), 'w', 'g', x_sorted[0], y_sorted[0], colors) # replace!!!
 
 def flood_fill(x, y, OldColor, NewColor, xmin, ymin, colors):
- #   if(x >= 0 && x < w && y >= 0 && y < h && screenBuffer[x][y] == oldColor && screenBuffer[x][y] != newColor) 
-
-    if (colors[x - xmin][y - ymin] == OldColor and colors[x-xmin+1][y-ymin] != 'm' and colors[x-xmin-1][y-ymin] !='m' and colors[x-xmin][y-ymin-1] != 'm' and colors[x-xmin][y-ymin+1] != 'm'):     
+    if (colors[x - xmin][y - ymin] == OldColor):      
         plt.plot(x, y, marker='.', markersize = 15, markerfacecolor = 'g')
         colors[x-xmin][y-ymin] = NewColor
         flood_fill(x,y-1,OldColor, NewColor, xmin, ymin, colors)
-        print('here1')
-        print(x)
-        print(y)
-        print(NewColor)
         flood_fill(x,y+1,OldColor, NewColor, xmin, ymin, colors)
-        print('here2')
-        print(x)
-        print(y)
-        print(NewColor)
         flood_fill(x-1,y,OldColor, NewColor, xmin, ymin, colors)
-        print('here3')
-        print(x)
-        print(y)
-        print(NewColor)
         flood_fill(x+1,y,OldColor, NewColor, xmin, ymin, colors)
-        print('here4')
-        print(x)
-        print(y)
-        print(NewColor)
 
 
 def plot_poly(px, py, colors,xmin,ymin):
