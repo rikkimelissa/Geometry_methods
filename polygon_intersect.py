@@ -21,6 +21,8 @@ def find_intersections(P1,P2):
     ylist_ind = np.argsort(y1 + y2)
     order = ylist_ind[::-1]
     segmentlist = []
+    segmentlabels = []
+    intersectlist = []
     for y, ind in zip(eventlist,order):
         if (ylabels[ind] == 1):
             segment1 = [((x1)[ind-1],(y1)[ind-1]),((x1)[ind],(y1)[ind])]
@@ -29,18 +31,30 @@ def find_intersections(P1,P2):
             ind -= len(x1)
             segment1 = [((x2)[ind-1],(y2)[ind-1]),((x2)[ind],(y2)[ind])]
             segment2 = [((x2)[ind],(y2)[ind]),((x2)[(ind+1)%len(y2)],(y2)[(ind+1)%len(y2)])]
-        if not segment1 in segmentlist
+            ind += len(x1)
+        if not segment1 in segmentlist:
             segmentlist.append(segment1)
-        if not segment2 in segmentlist
+            segmentlabels.append(ylabels[ind])
+        if not segment2 in segmentlist:
             segmentlist.append(segment2)
-        for i,segments_y in enumerate(segmentlist):
-            if segments_y[0][1] > y and segments_y[1][1] > y:
-                 del segmentlist[i]
-        
-        
-        
-        
-        
+            segmentlabels.append(ylabels[ind])
+        todelete = []
+        for i,segments in enumerate(segmentlist):
+            if segments[0][1] > y and segments[1][1] > y:
+                todelete.append(i)
+        for i in reversed(todelete):
+            del segmentlist[i]
+            del segmentlabels[i]
+        for segment1,l1 in zip(segmentlist[:-1],segmentlabels[:-1]):
+            for segment2,l2 in zip(segmentlist[1:],segmentlabels[1:]):
+                if not (segment1 == segment2):
+                    if not (l1 == l2):
+                        result = line_intersect(segment1,segment2)
+                        if result['intersect'] == True:
+                            if not (result['x_int'],result['y_int']) in intersectlist:
+                                intersectlist.append((result['x_int'],result['y_int']))
+
+    return intersectlist
         
 def line_intersect(l1,l2):
 # http://www.ahinson.com/algorithms_general/Sections/Geometry/ParametricLineIntersection.pdf
@@ -55,8 +69,8 @@ def line_intersect(l1,l2):
     s = float((x4-x3)*(y3-y1) - (x3-x1)*(y4-y3))/((x4-x3)*(y2-y1) - (x2-x1)*(y4-y3))
     t = float((x2-x1)*(y3-y1) - (x3-x1)*(y2-y1))/((x4-x3)*(y2-y1) - (x2-x1)*(y4-y3))
     if (s>=0 and s<=1 and t>=0 and t<=1):
-        x_int = x1 + (x2-x2)*s
-        y_int = y1 + (y2-x2)*s
+        x_int = x1 + (x2-x1)*s
+        y_int = y1 + (y2-y1)*s
         intersect = True
     else:
         intersect = False
