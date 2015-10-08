@@ -23,6 +23,8 @@ def find_intersections(P1,P2):
     segmentlist = []
     segmentlabels = []
     intersectlist = []
+    P1new = P1
+    P2new = P2
     for y, ind in zip(eventlist,order):
         if (ylabels[ind] == 1):
             segment1 = [((x1)[ind-1],(y1)[ind-1]),((x1)[ind],(y1)[ind])]
@@ -53,7 +55,16 @@ def find_intersections(P1,P2):
                         if result['intersect'] == True:
                             if not (result['x_int'],result['y_int']) in intersectlist:
                                 intersectlist.append((result['x_int'],result['y_int']))
-
+                                if l1 == 1:
+                                    poly1_index = P1.index(segment1[0])
+                                    poly2_index = P2.index(segment2[0])
+                                else:
+                                    poly1_index = P1.index(segment2[0])
+                                    poly2_index = P2.index(segment1[0])
+                                P1new.insert(poly1_index+1,(result['x_int'],result['y_int']))
+                                P2new.insert(poly2_index+1,(result['x_int'],result['y_int']))
+    print P1new
+    print P2new                            
     return intersectlist
         
 def line_intersect(l1,l2):
