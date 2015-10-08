@@ -20,6 +20,7 @@ def find_intersections(P1,P2):
     eventlist = ylist[::-1]
     ylist_ind = np.argsort(y1 + y2)
     order = ylist_ind[::-1]
+    segmentlist = []
     for y, ind in zip(eventlist,order):
         if (ylabels[ind] == 1):
             segment1 = [((x1)[ind-1],(y1)[ind-1]),((x1)[ind],(y1)[ind])]
@@ -28,10 +29,19 @@ def find_intersections(P1,P2):
             ind -= len(x1)
             segment1 = [((x2)[ind-1],(y2)[ind-1]),((x2)[ind],(y2)[ind])]
             segment2 = [((x2)[ind],(y2)[ind]),((x2)[(ind+1)%len(y2)],(y2)[(ind+1)%len(y2)])]
-        print segment1
-        print segment2
-        raw_input("Press Enter to continue...")
-
+        if not segment1 in segmentlist
+            segmentlist.append(segment1)
+        if not segment2 in segmentlist
+            segmentlist.append(segment2)
+        for i,segments_y in enumerate(segmentlist):
+            if segments_y[0][1] > y and segments_y[1][1] > y:
+                 del segmentlist[i]
+        
+        
+        
+        
+        
+        
 def line_intersect(l1,l2):
 # http://www.ahinson.com/algorithms_general/Sections/Geometry/ParametricLineIntersection.pdf
     x1 = l1[0][0]
