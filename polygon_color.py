@@ -25,13 +25,19 @@ def plot_line(p1,p2):
         if (slope <= 1):
             for i in range(x2-x1):
                 xval += 1
-                yval = slope*xval + b
+                yval = float(slope*xval + b)
                 midpoint = y_plot + .5
                 if yval > midpoint:
                     y_plot += 1
                 plt.plot(xval, y_plot, marker='.', markersize = 25)
         else:
-            for i in range(y2-y1)
+            for i in range(y2-y1):
+                yval += 1
+                xval = float((yval-b)/slope)
+                midpoint = x_plot + .5
+                if xval > midpoint:
+                    x_plot += 1
+                plt.plot(x_plot, yval, marker='.', markersize = 25)
     plt.show()
     plt.plot((p1[0], p2[0]),(p1[1], p2[1]))
 
