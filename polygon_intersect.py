@@ -4,10 +4,61 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 def polygon_intersect():
-# find_intersections():
 # find_polygons():
     P1 = [(7,7),(5,14),(4,14),(2,10),(1,6),(1,3),(5,3)]
     P2 = [(5,8),(9,10),(5,17),(4,11)]
+    result = find_intersections(P1,P2)
+    P3 = compose_new_polygon(result)
+    plt.cla()
+    plt.axis('equal')
+    plt.hold(True)
+    plt.plot(*zip(*P1)) #import functions!
+    plt.plot(*zip(*P2))
+    plt.plot(*zip(*P3))
+
+def compose_new_polygon(result):
+    P1 = result['P1']
+    P2 = result['P2']
+    P3 = []
+    intersect_list = result['intersectlist']
+    p1_index0 = P1.index(intersect_list[0])
+    p2_index0 = P2.index(intersect_list[0])
+    p1_index1 = P1.index(intersect_list[1])
+    p2_index1 = P2.index(intersect_list[1])
+    seg1 = [a - b for a,b in zip(P1[p1_index + 1], intersect_list[0])]
+    seg2 = [a - b for a,b in zip(intersect_list[0], P2[p2_index + 1])]
+    tri_dir = np.cross(seg1,seg2)
+    if tri_dir is positive:
+        P3.append(intersect_list[0])
+        node = (p1_index0+1)%len(P2)
+        next = P1[node]
+        while (next != intersect_list[1]):
+            P3.append(next)
+            node = (node+1)%len(P1)
+            next = P1[node]         
+        P3.append(intersect_list[1])
+        node = (p2_index1+1)%len(P2)
+        next = P2[node]
+        while (next != intersect_list[0])
+            P3.append(next)
+            node = (node+1)%len(P2)
+            next = P2[node]
+    else:
+        P3.append(intersect_list[0])
+        node = (p2_index0+1)%len(P2)
+        next = P2[node]
+        while (next != intersect_list[1]):
+            P3.append(next)
+            node = (node+1)%len(P2)
+            next = P2[node]
+        P3.append(intersect_list[1])
+        node = (p1_index1+1)%len(P2)
+        next = P1[node]
+        while (next != intersect_list[0])
+            P3.append(next)
+            node = (node+1)%len(P1)
+            next = P1[node] 
+    return P3
     
 def find_intersections(P1,P2):
     #line sweep
@@ -65,7 +116,7 @@ def find_intersections(P1,P2):
                                 P2new.insert(poly2_index+1,(result['x_int'],result['y_int']))
     print P1new
     print P2new                            
-    return intersectlist
+    return {'intersectlist':intersectlist, 'P1':P1new, 'P2':P2new}
         
 def line_intersect(l1,l2):
 # http://www.ahinson.com/algorithms_general/Sections/Geometry/ParametricLineIntersection.pdf
