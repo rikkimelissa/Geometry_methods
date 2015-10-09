@@ -3,7 +3,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-points = [(3, 9),(3, 18),(6, 30),(12, 33),(12, 42),(15, 9),(15, 24),(15, 42),(15, 51),(21, 21),(27, 30)]
+points = [(3, 9),(3, 18),(6, 30),(12, 42),(15, 9),(15, 42),(21, 21),(32, 33),(35, 24),(35, 51),(47, 30)]
 #        P1 = [(21,21),(15,42),(12,42),(6,30),(3,18),(3,9),(15,9)]
 #        P2 = [(35,24),(47,30),(35,51),(32,33)]
 
@@ -13,25 +13,47 @@ def convex_hull_plot(points):
     plt.grid('on')
     plt.hold(True)
     hull = convex_hull(points)
-    plt.plot(*zip(*points), marker='.', markersize = 25)
-    plt.plot(*zip(*hull), marker='.', markersize = 25)
+    plt.scatter(*zip(*points))
+    plt.plot(*zip(*hull))
     plt.show(block=False)
 
 def convex_hull(points):
     if (len(points) <= 3):
         hull = brute_force(points)
+        raw_input('Brute hull')
+        print('brute',hull)
+        plt.scatter(*zip(*points))
+        plt.plot(*zip(*hull))    
+        plt.show(block=False) 
     else:
         midpoint = len(points)/2
         lA = [points[i] for i in range(midpoint)]
-        lB = [points[i+midpoint] for i in range(len(points)-midpoint)]           
+        lB = [points[i+midpoint] for i in range(len(points)-midpoint)] 
+        raw_input('Next split')   
+        print('lA',lA)
+        print('lB',lB)       
         hA = convex_hull(lA)
         hB = convex_hull(lB)
-        hull = merge_hulls(lA,lB)     
-        raw_input('Next')
+        raw_input('Next hull')
+        print('hA',hA)
+        print('hB',hB) 
+        hull = merge_hulls(hA,hB)     
         print(hull)
-        return hull
+        plt.scatter(*zip(*points))
+        plt.plot(*zip(*hull))    
+        plt.show(block=False)  
+    return hull
               
-def merge_hulls(P1,P2):
+def brute_force(points):
+    if len(points)==3:
+        dir = check_turn_dir(points[0],points[1],points[2])
+        if dir<0:
+            points = [points[0], points[2], points[1]]
+        return points
+    else:
+        return points
+        
+def merge_hulls(lA,lB):
 # Find the upper tangent
     rightA_top = lA.index(max(lA, key=lambda x:x[0]))
     leftB_top = lB.index(min(lB, key=lambda x:x[0]))
@@ -80,29 +102,6 @@ def check_turn_dir(p1,p2,p3):
     seg2 = [a - b for a,b in zip(p3,p2)]
     dir = np.cross(seg1,seg2)
     return dir
-        
-def brute_force(points):
-    dir = check_turn_dir(points[0],points[1],points[2])
-    if dir<0:
-        points = [points[0], points[2], points[1]]
-    return points
-
-        
-        
-    
-    
-    
-    
-#    def flood_fill(x, y, OldColor, NewColor, xmin, ymin, colors):
-#    if (colors[x - xmin][y - ymin] == OldColor):      
-#        plt.plot(x, y, marker='.', markersize = 15, markerfacecolor = 'g')
-#        colors[x-xmin][y-ymin] = NewColor
-#        flood_fill(x,y-1,OldColor, NewColor, xmin, ymin, colors)
-#        flood_fill(x,y+1,OldColor, NewColor, xmin, ymin, colors)
-#        flood_fill(x-1,y,OldColor, NewColor, xmin, ymin, colors)
-#        flood_fill(x+1,y,OldColor, NewColor, xmin, ymin, colors)
-
-
 
 if __name__ == '__main__':
-    convex_hull(points)
+    convex_hull_plot(points)
