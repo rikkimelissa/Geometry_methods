@@ -2,10 +2,9 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
+from polygon_color import plot_boundary
 
 points = [(3, 9),(3, 18),(6, 30),(12, 42),(15, 9),(15, 42),(21, 21),(32, 33),(35, 24),(35, 51),(47, 30)]
-#        P1 = [(21,21),(15,42),(12,42),(6,30),(3,18),(3,9),(15,9)]
-#        P2 = [(35,24),(47,30),(35,51),(32,33)]
 
 def convex_hull_plot(points):
     plt.cla()
@@ -14,34 +13,19 @@ def convex_hull_plot(points):
     plt.hold(True)
     hull = convex_hull(points)
     plt.scatter(*zip(*points))
-    plt.plot(*zip(*hull))
+    plot_boundary(hull)
     plt.show(block=False)
 
 def convex_hull(points):
     if (len(points) <= 3):
         hull = brute_force(points)
-        raw_input('Brute hull')
-        print('brute',hull)
-        plt.scatter(*zip(*points))
-        plt.plot(*zip(*hull))    
-        plt.show(block=False) 
     else:
         midpoint = len(points)/2
         lA = [points[i] for i in range(midpoint)]
-        lB = [points[i+midpoint] for i in range(len(points)-midpoint)] 
-        raw_input('Next split')   
-        print('lA',lA)
-        print('lB',lB)       
+        lB = [points[i+midpoint] for i in range(len(points)-midpoint)]       
         hA = convex_hull(lA)
         hB = convex_hull(lB)
-        raw_input('Next hull')
-        print('hA',hA)
-        print('hB',hB) 
         hull = merge_hulls(hA,hB)     
-        print(hull)
-        plt.scatter(*zip(*points))
-        plt.plot(*zip(*hull))    
-        plt.show(block=False)  
     return hull
               
 def brute_force(points):

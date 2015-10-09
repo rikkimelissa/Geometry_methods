@@ -3,10 +3,10 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from polygon_color import plot_boundary # how to import?
-from poylgon_color import flood_fill
+from polygon_color import flood_fill
 
-P2 = [(21,21),(15,42),(12,42),(6,30),(3,18),(3,9),(15,9)]
-P1 = [(15,24),(27,30),(15,51),(12,33)]
+P1 = [(21,21),(15,42),(12,42),(6,30),(3,18),(3,9),(15,9)]
+P2 = [(15,24),(27,30),(15,51),(12,33)]
 
 def polygon_intersect(P1,P2):
 
@@ -29,7 +29,7 @@ def polygon_intersect(P1,P2):
     colors = plot_boundary(poly)
     flood_fill(int(np.median(px)),int(np.median(py)), 'w', 'g', x_sorted[0], y_sorted[0], colors)
     
-    plt.show()
+    plt.show(block=False)
 
 def compose_new_polygon(result):
     P1 = result['P1']
@@ -155,4 +155,4 @@ def line_intersect(l1,l2):
     return {'intersect':intersect, 'x_int':x_int, 'y_int':y_int} 
 
 if __name__ == '__main__':
-    polygon_intersect()
+    polygon_intersect(P1,P2)

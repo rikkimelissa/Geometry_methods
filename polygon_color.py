@@ -16,7 +16,7 @@ def polygon_color(poly):
     plt.hold(True)
     colors = plot_boundary(poly)
     flood_fill(int(np.median(px)),int(np.median(py)), 'w', 'g', x_sorted[0], y_sorted[0], colors)   
-    plt.show()
+    plt.show(block=False)
 
 def plot_boundary(poly):
     px = [poly[i][0] for i in range(len(poly))]
