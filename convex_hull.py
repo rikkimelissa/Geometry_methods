@@ -26,37 +26,56 @@ def convex_hull(points):
         plt.hold(True)
         plt.plot(*zip(*P1), marker='.', markersize = 25)
         plt.plot(*zip(*P2), marker='.', markersize = 25)
-        plt.show(block=False)
+
     
      #   hA = convex_hull(lA)
      #   hB = convex_hull(lB)
-        rightA = lA.index(max(lA, key=lambda x:x[0]))
-        leftB = lB.index(min(lB, key=lambda x:x[0]))
-        upperright = check_turn_dir(lA[rightA],lB[leftB],lB[(leftB-1)%len(lB)])
-        upperleft = check_turn_dir(lB[leftB],lA[rightA],lA[(rightA+1)%len(lA)])
-        print ('lA',lA[rightA])
-        print ('lB', lB[leftB])
-        print('rightdir',upperright)
-        print('leftdir',upperleft)
-        print('p1',lB[leftB])
-        print('p2',lA[rightA])
-        print('p3',lA[(rightA+1)%len(lA)])
-        raw_input('Next')
+# Find the upper tangent
+        rightA_top = lA.index(max(lA, key=lambda x:x[0]))
+        leftB_top = lB.index(min(lB, key=lambda x:x[0]))
+        upperright = check_turn_dir(lA[rightA_top],lB[leftB_top],lB[(leftB_top-1)%len(lB)])
+        upperleft = check_turn_dir(lB[leftB_top],lA[rightA_top],lA[(rightA_top+1)%len(lA)])
         while (upperright > 0) or (upperleft < 0):
             if (upperright > 0):
-                leftB = (leftB - 1)%len(lB)
-            if (upperleft < 0):
-                rightA = (rightA + 1)%len(lA)
-            upperright = check_turn_dir(lA[rightA],lB[leftB],lB[(leftB-1)%len(lB)])
-            upperleft = check_turn_dir(lB[leftB],lA[rightA],lA[(rightA+1)%len(lA)])
-            print ('lA',lA[rightA])
-            print ('lB', lB[leftB])
-            print('p3A',lA[(rightA+1)%len(lA)])
-            print('p3B',lB[(leftB-1)%len(lB)])
-            print('rightdir',upperright)
-            print('leftdir',upperleft)
-            
-            raw_input('Next')
+                leftB_top = (leftB_top - 1)%len(lB)
+            elif (upperleft < 0):
+                rightA_top = (rightA_top + 1)%len(lA)
+            upperright = check_turn_dir(lA[rightA_top],lB[leftB_top],lB[(leftB_top-1)%len(lB)])
+            upperleft = check_turn_dir(lB[leftB_top],lA[rightA_top],lA[(rightA_top+1)%len(lA)])
+
+# Find the lower tangent
+        rightA_bot = lA.index(max(lA, key=lambda x:x[0]))
+        leftB_bot = lB.index(min(lB, key=lambda x:x[0]))
+        lowerright = check_turn_dir(lA[rightA_bot],lB[leftB_bot],lB[(leftB_bot+1)%len(lB)])
+        lowerleft = check_turn_dir(lB[leftB_bot],lA[rightA_bot],lA[(rightA_bot-1)%len(lA)])
+        while (lowerright < 0) or (lowerleft > 0):
+            if (lowerright < 0):
+                leftB_bot = (leftB_bot + 1)%len(lB)
+            elif (lowerleft > 0):
+                rightA_bot = (rightA_bot - 1)%len(lA)
+            lowerright = check_turn_dir(lA[rightA_bot],lB[leftB_bot],lB[(leftB_bot+1)%len(lB)])
+            lowerleft = check_turn_dir(lB[leftB_bot],lA[rightA_bot],lA[(rightA_bot-1)%len(lA)])
+        P3 = []
+        nodeA = rightA_top
+        P3.append(lA[nodeA])
+        nodeA = (nodeA + 1)%len(lA)
+        while (nodeA != rightA_bot):
+            P3.append(lA[nodeA])
+            nodeA = (nodeA + 1)%len(lA)
+        P3.append(lA[nodeA])
+        nodeB = leftB_bot
+        P3.append(lB[nodeB])
+        nodeB = (nodeB + 1)%len(lB)
+        while (nodeB != leftB_top):
+            P3.append(lB[nodeB])
+            nodeB = (nodeB + 1)%len(lB)
+        P3.append(lB[nodeB])
+        print(P3)
+        
+        plt.plot(*zip(*P3), marker='.', markersize = 25)
+        plt.show(block=False)
+        
+
                    
 def check_turn_dir(p1,p2,p3):
     seg1 = [a - b for a,b in zip(p2,p1)]
