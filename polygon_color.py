@@ -40,7 +40,6 @@ def plot_poly(px, py, colors,xmin,ymin):
     for i in range(len(px)):
         p1 = (px[i], py[i])
         p2 = (px[(i+1)%len(px)],py[(i+1)%len(px)])
-        print('line')
         if (p1[0] <= p2[0]):
             colors = plot_line(p1,p2,colors,xmin,ymin)
         else:
