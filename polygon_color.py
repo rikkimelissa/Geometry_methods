@@ -3,18 +3,30 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-def polygon_color():
-    px = (7, 5, 4, 2, 1, 1, 5) #(21, 15, 12,  6,  3, 3, 15)
-    py = (7, 14, 14, 10,  6,  3,  3) #(21, 42, 42, 30, 18, 9, 9)
+poly = [(21,21),(15,42),(12,42),(6,30),(3,18),(3,9),(15,9)]
+
+def polygon_color(poly):
+    px = [poly[i][0] for i in range(len(poly))]
+    py = [poly[i][1] for i in range(len(poly))]
     x_sorted = np.sort(px) # replace!!!
     y_sorted = np.sort(py) # replace!!!
     plt.cla()
     plt.axis('equal')
+    plt.grid('on')
+    plt.hold(True)
+    colors = plot_boundary(poly)
+    flood_fill(int(np.median(px)),int(np.median(py)), 'w', 'g', x_sorted[0], y_sorted[0], colors)   
+    plt.show()
+
+def plot_boundary(poly):
+    px = [poly[i][0] for i in range(len(poly))]
+    py = [poly[i][1] for i in range(len(poly))]
+    x_sorted = np.sort(px) # replace!!!
+    y_sorted = np.sort(py) # replace!!!
     colors = [['w' for x in range(y_sorted[-1] - y_sorted[0] + 1)] for x in range(x_sorted[-1] - x_sorted[0] + 1)] 
     colors = plot_poly(px,py,colors,x_sorted[0],y_sorted[0])
-    print colors
-    flood_fill(int(np.median(px)),int(np.median(py)), 'w', 'g', x_sorted[0], y_sorted[0], colors) # replace!!!
-
+    return colors
+    
 def flood_fill(x, y, OldColor, NewColor, xmin, ymin, colors):
     if (colors[x - xmin][y - ymin] == OldColor):      
         plt.plot(x, y, marker='.', markersize = 15, markerfacecolor = 'g')
@@ -24,11 +36,11 @@ def flood_fill(x, y, OldColor, NewColor, xmin, ymin, colors):
         flood_fill(x-1,y,OldColor, NewColor, xmin, ymin, colors)
         flood_fill(x+1,y,OldColor, NewColor, xmin, ymin, colors)
 
-
 def plot_poly(px, py, colors,xmin,ymin):
     for i in range(len(px)):
         p1 = (px[i], py[i])
         p2 = (px[(i+1)%len(px)],py[(i+1)%len(px)])
+        print('line')
         if (p1[0] <= p2[0]):
             colors = plot_line(p1,p2,colors,xmin,ymin)
         else:
@@ -44,12 +56,11 @@ def plot_line(p1,p2,colors,xmin,ymin):
     y2 = p2[1]
     if (x2-x1) != 0:
         slope = float(y2-y1)/(x2-x1)
-        b = float(y2 - slope*x2) # y-intercept
+        b = float(y2 - slope*x2)
     else:
         vertical = True
     xval = x_plot = x1
     yval = y_plot = y1
-    plt.hold(True)
     plt.plot(xval, y_plot, marker='.', markersize = marker_size, markerfacecolor = 'm')
     colors[xval - xmin][y_plot - ymin] = 'm'
     if vertical != True:
@@ -101,10 +112,8 @@ def plot_line(p1,p2,colors,xmin,ymin):
             yval -= 1
             plt.plot(x_plot, yval, marker='.', markersize = marker_size, markerfacecolor = 'm')
             colors[x_plot - xmin][yval - ymin] = 'm'
-    plt.show()
-    return colors
-    #plt.plot((p1[0], p2[0]),(p1[1], p2[1]))
+    return colors        
 
 
 if __name__ == '__main__':
-    polygon_color()
+    polygon_color(poly)
