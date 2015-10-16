@@ -47,5 +47,5 @@ def readfile(file):
     return {'poly1':poly1, 'poly2':poly2, 'points':points}
     
 if __name__ == '__main__':
-    result = readfile('Input2.txt')
+    result = readfile(file)
 

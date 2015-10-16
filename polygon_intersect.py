@@ -4,12 +4,16 @@ import numpy as np
 import matplotlib.pyplot as plt
 from polygon_color import plot_boundary # how to import?
 from polygon_color import flood_fill
+import readfile
 
 P1 = [(21,21),(15,42),(12,42),(6,30),(3,18),(3,9),(15,9)]
 P2 = [(15,24),(27,30),(15,51),(12,33)]
 
-def polygon_intersect(P1,P2):
+def polygon_intersect(file):
 
+    result = readfile.readfile(file)
+    P1 = result['poly1']
+    P2 = result['poly2']
     plt.cla()
     plt.axis('equal')
     plt.grid('on')

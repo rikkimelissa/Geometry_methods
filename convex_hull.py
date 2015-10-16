@@ -3,10 +3,14 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from polygon_color import plot_boundary
+import readfile
 
 points = [(3, 9),(3, 18),(6, 30),(12, 42),(15, 9),(15, 42),(21, 21),(32, 33),(35, 24),(35, 51),(47, 30)]
 
-def convex_hull_plot(points):
+def convex_hull_plot(file):
+    
+    result = readfile.readfile(file)
+    points = result['points']
     plt.cla()
     plt.axis('equal')
     plt.grid('on')

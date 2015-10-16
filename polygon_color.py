@@ -7,7 +7,10 @@ import readfile
 poly = [(21,21),(15,42),(12,42),(6,30),(3,18),(3,9),(15,9)]
 
 def polygon_color(file):
-    poly = readfile.readfile(file)
+
+    result = readfile.readfile(file)
+    poly = result['poly1']
+    
     px = [poly[i][0] for i in range(len(poly))]
     py = [poly[i][1] for i in range(len(poly))]
     x_sorted = np.sort(px) # replace!!!
